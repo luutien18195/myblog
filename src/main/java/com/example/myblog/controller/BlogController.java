@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping(value = {"/home","/"})
 public class BlogController {
     private PostService postService;
-    public static String uploadDirectory = "user.dir" + "/uploads";
+    public static String uploadDirectory = System.getProperty("user.dir")+ "/uploads/";
 
     @Autowired
     public BlogController(PostService postService){
@@ -44,7 +44,7 @@ public class BlogController {
     @RequestMapping(value = "/post", method = RequestMethod.POST)
     public String createNewPost(Model model, @ModelAttribute("post") Post post,
                                 @RequestParam String date, @RequestParam(value = "file") MultipartFile file){
-        if(file.isEmpty()){
+        if(!file.isEmpty()){
             try {
                 byte[] bytes = file.getBytes();
                 Path path = Paths.get(uploadDirectory + file.getOriginalFilename());
@@ -54,16 +54,10 @@ public class BlogController {
                 e.printStackTrace();
             }
         }
+        post.setImage(file.getOriginalFilename());
         post.setDate(date);
         postService.save(post);
         return "redirect:/";
     }
 
-    public File getFolderUpload() {
-        File folderUpload = new File(System.getProperty("user.home") + "/Uploads");
-        if (!folderUpload.exists()) {
-            folderUpload.mkdirs();
-        }
-        return folderUpload;
-    }
 }
