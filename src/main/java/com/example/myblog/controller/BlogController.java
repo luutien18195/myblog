@@ -7,12 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
 @RequestMapping(value = {"/home","/"})
 public class BlogController {
     private PostService postService;
+    public static String uploadDirectory = "user.dir" + "/uploads";
 
     @Autowired
     public BlogController(PostService postService){
@@ -34,13 +42,28 @@ public class BlogController {
     }
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
-    public String createNewPost(Model model, @ModelAttribute("post") Post post, @RequestParam String date){
+    public String createNewPost(Model model, @ModelAttribute("post") Post post,
+                                @RequestParam String date, @RequestParam(value = "file") MultipartFile file){
+        if(file.isEmpty()){
+            try {
+                byte[] bytes = file.getBytes();
+                Path path = Paths.get(uploadDirectory + file.getOriginalFilename());
+                Files.write(path,bytes);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         post.setDate(date);
         postService.save(post);
-        String message, status;
-        message = "successfully";
+        return "redirect:/";
+    }
 
-        model.addAttribute("message", message);
-        return "new_post";
+    public File getFolderUpload() {
+        File folderUpload = new File(System.getProperty("user.home") + "/Uploads");
+        if (!folderUpload.exists()) {
+            folderUpload.mkdirs();
+        }
+        return folderUpload;
     }
 }

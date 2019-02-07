@@ -6,6 +6,12 @@
     <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootswatch/4.2.1/sandstone/bootstrap.min.css}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <style>
+        /*#fileUpload{*/
+            /*background-image: url("../static/icon/images-regular.svg");*/
+        /*}*/
+    </style>
 </head>
 <body>
 <!--===============HEADER==========================-->
@@ -52,7 +58,7 @@
             <ul class="list-group">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     Cras justo odio
-                    <span class="badge badge-primary badge-pill">14</span>
+                    <span class="badge badge-primary badge-pill">15</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     Dapibus ac facilisis in
@@ -74,7 +80,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <form method="post" action="/post" th:object="${post}">
+                    <form method="POST" action="/post" th:object="${post}" enctype="multipart/form-data">
                         <h4 class="card-title">
                             <i class="fas fa-edit"></i>
                             Start a post
@@ -90,10 +96,11 @@
                         <div class="row">
                             <div class="col-4">
                                 <div class="input-group mb-3">
+                                    <!--<img th:if="${post.image!=''}" th:src="#inputGroupFile02.value()" alt="">-->
                                     <div class="custom-file">
-                                        <input th:field="*{image}" type="file" class="custom-file-input" id="inputGroupFile02"
+                                            <input name="file" type="file" class="custom-file-input" id="fileUpload"
                                                    accept="image/gif,image/jpeg,image/jpg,image/png,video/mp4,video/x-m4v">
-                                        <label class="custom-file-label" for="inputGroupFile02">Choose image</label>
+                                            <label class="custom-file-label" for="fileUpload">Choose image</label>
                                     </div>
                                 </div>
                             </div>
@@ -136,5 +143,6 @@
 
 <!--==================FOOTER=====================-->
 <!--==================end-FOOTER=================-->
+
 </body>
 </html>
