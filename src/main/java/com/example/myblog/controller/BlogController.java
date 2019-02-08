@@ -15,6 +15,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 @RequestMapping(value = {"/home","/"})
@@ -44,17 +45,20 @@ public class BlogController {
     @RequestMapping(value = "/post", method = RequestMethod.POST)
     public String createNewPost(Model model, @ModelAttribute("post") Post post,
                                 @RequestParam String date, @RequestParam(value = "file") MultipartFile file){
+        Random rd = new Random();
+        int randomNum = rd.nextInt(1000000);
+        String fileName = randomNum+"_"+file.getOriginalFilename();
         if(!file.isEmpty()){
             try {
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(uploadDirectory + file.getOriginalFilename());
+                Path path = Paths.get(uploadDirectory + fileName);
                 Files.write(path,bytes);
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        post.setImage(file.getOriginalFilename());
+        post.setImage(fileName);
         post.setDate(date);
         postService.save(post);
         return "redirect:/";
