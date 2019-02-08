@@ -22,7 +22,8 @@ public class Post {
     @Column(name = "comment_id")
     private int comment_id;
 
-    @JoinColumn(name = "user_id", nullable = false) //nullable = false;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = true) //nullable = false;
     private User user;
 
     public Post() {

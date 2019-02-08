@@ -41,4 +41,9 @@ public class UserServiceImpl implements UserService {
     public void deleteById(int id) {
         this.userRepository.deleteById(id);
     }
+
+    @Override
+    public boolean confirmUser(User user) {
+        return true;
+    }
 }

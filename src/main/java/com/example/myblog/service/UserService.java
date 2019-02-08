@@ -15,4 +15,6 @@ public interface UserService {
 
     void deleteById(int id);
 
+    boolean confirmUser(User user);
+
 }
