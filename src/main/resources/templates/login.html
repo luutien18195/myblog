@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
@@ -13,17 +13,20 @@
         <div class="card border-primary mb-3 main-content" style="max-width: 30rem;">
             <div class="card-body">
                 <h2 class="form-title">Login</h2>
-                <form>
+                <form method="post" action="/login">
                     <fieldset>
-                        <div class="form-group">
-                            <label for="username">Your Username</label>
-                            <input type="text" class="form-control" id="username" placeholder="Enter Username">
+                        <div th:classappend="${error} ? 'has-danger':'' " class="form-group">
+                            <label for="username">Username</label>
+                            <input th:classappend="${error} ? 'is-invalid':'' "
+                                   type="text" name="username" class="form-control" id="username" placeholder="Enter Username">
                         </div>
 
-                        <div class="form-group">
+                        <div th:classappend="${error} ? 'has-danger':'' " class="form-group">
                             <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Password">
+                            <input th:classappend="${error} ? 'is-invalid':'' "
+                                   type="password" name="password" class="form-control" id="password" placeholder="Password">
 
+                            <div th:if="${error}" th:text="${error}" class="invalid-feedback"></div>
                             <a href="/register">Create an acount</a>
                         </div>
 

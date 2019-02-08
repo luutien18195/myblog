@@ -33,6 +33,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByUsernameAndPassword(String username, String password) {
+        return this.userRepository.findUserByUsernameAndPassword(username,password);
+    }
+
+    @Override
     public void save(User user) {
         this.userRepository.save(user);
     }

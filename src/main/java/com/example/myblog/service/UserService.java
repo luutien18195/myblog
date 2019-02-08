@@ -11,6 +11,8 @@ public interface UserService {
 
     User findByUserName(String name);
 
+    User findByUsernameAndPassword(String username, String password);
+
     void save(User user);
 
     void deleteById(int id);
