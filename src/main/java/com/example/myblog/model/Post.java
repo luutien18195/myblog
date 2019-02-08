@@ -1,9 +1,6 @@
 package com.example.myblog.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -25,8 +22,8 @@ public class Post {
     @Column(name = "comment_id")
     private int comment_id;
 
-    @Column(name = "user_id")
-    private int user_id;
+    @JoinColumn(name = "user_id", nullable = false) //nullable = false;
+    private User user;
 
     public Post() {
         this.image = null;
@@ -76,11 +73,11 @@ public class Post {
         this.comment_id = comment_id;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
