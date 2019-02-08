@@ -1,26 +1,36 @@
 package com.example.myblog.model;
 
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
+
 import javax.persistence.*;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "user")
-public class User {
+public class User implements Validator {
 
     @Id
     private int id;
 
     @Column(name = "email")
+    @Email
     private String email;
 
     @Column(name = "user_name")
-    private String userName;
+    @Size(min = 5, max = 18)
+    private String username;
 
     @Column(name = "password")
+    @Size(min = 5, max = 20)
     private String password;
 
     @Column(name = "confirm_password")
+    @Size(min = 5, max = 20)
     private String confirmPassword;
 
     @Column(name = "avatar_link")
@@ -48,12 +58,12 @@ public class User {
         this.email = email;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -86,5 +96,18 @@ public class User {
 
     public void setPosts(Set<Post> posts) {
         this.posts = posts;
+    }
+
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return User.class.isAssignableFrom(clazz);
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
+        User user = (User) target;
+        if(!user.getPassword().equals(user.getConfirmPassword())){
+            errors.rejectValue("password","password.wrongPassword");
+        }
     }
 }
