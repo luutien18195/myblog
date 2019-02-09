@@ -4,11 +4,13 @@
 }
 
 body{
-    background: #2a383e;
 }
 
 .main-content{
-    margin: 5% auto;
+    position: absolute;
+    width: 305px;
+    top: 10%;
+    left: 40%;
 }
 
 .form-title{
@@ -17,4 +19,10 @@ body{
     margin-bottom: 25px;
     padding-bottom: 5px;
     color: #325D88;;
+}
+
+#particles-js{
+    position: relative;
+    background: #262626;
+    height: 100%;
 }
