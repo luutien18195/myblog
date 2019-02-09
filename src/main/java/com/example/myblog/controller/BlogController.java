@@ -27,7 +27,7 @@ public class BlogController {
 
     @Autowired
     private UserService userService;
-    public static String uploadDirectory = System.getProperty("user.dir")+ "/uploads/";
+    public static String uploadDirectory = System.getProperty("user.dir")+ "/src/main/resources/static/uploads/";
 
     @Autowired
     public BlogController(PostService postService){

@@ -12,7 +12,7 @@ public class ResourcesConfiguration implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/images/**")
-                .addResourceLocations("file:images/","file:uploads/")
+                .addResourceLocations("file:images/","file:uploads/","file:src/main/resources/static/uploads/")
                 .setCachePeriod(0);
     }
 
