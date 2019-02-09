@@ -1,7 +1,9 @@
 package com.example.myblog.controller;
 
 import com.example.myblog.model.Post;
+import com.example.myblog.model.User;
 import com.example.myblog.service.PostService;
+import com.example.myblog.service.UserService;
 import com.example.myblog.service.impl.PostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.io.File;
@@ -21,12 +24,18 @@ import java.util.Random;
 @RequestMapping(value = {"/home","/"})
 public class BlogController {
     private PostService postService;
+
+    @Autowired
+    private UserService userService;
     public static String uploadDirectory = System.getProperty("user.dir")+ "/uploads/";
 
     @Autowired
     public BlogController(PostService postService){
         this.postService = postService;
     }
+
+
+
 
     @GetMapping
     public String showHomePage(Model model){
@@ -44,12 +53,15 @@ public class BlogController {
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
     public String createNewPost(Model model, @ModelAttribute("post") Post post,
-                                @RequestParam String date, @RequestParam(value = "file") MultipartFile file){
+                                @RequestParam String date, @RequestParam(value = "file") MultipartFile file,
+                                HttpSession session){
         Random rd = new Random();
         int randomNum = rd.nextInt(1000000);
-        String fileName = randomNum+"_"+file.getOriginalFilename();
+        String fileName = "";
+        User user = (User) session.getAttribute("current_user");
         if(!file.isEmpty()){
             try {
+                fileName = randomNum+"_"+file.getOriginalFilename();
                 byte[] bytes = file.getBytes();
                 Path path = Paths.get(uploadDirectory + fileName);
                 Files.write(path,bytes);
@@ -58,6 +70,7 @@ public class BlogController {
                 e.printStackTrace();
             }
         }
+        post.setUser(userService.findByUserName(user.getUsername()));
         post.setImage(fileName);
         post.setDate(date);
         postService.save(post);

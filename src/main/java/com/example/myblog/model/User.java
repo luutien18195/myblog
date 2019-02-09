@@ -15,6 +15,7 @@ import java.util.Set;
 public class User implements Validator {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column(name = "email")

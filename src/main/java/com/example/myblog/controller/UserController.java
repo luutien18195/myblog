@@ -59,4 +59,10 @@ public class UserController {
         }
 
     }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(Model model, HttpSession session){
+        session.removeAttribute("current_user");
+        return "redirect:/";
+    }
 }
