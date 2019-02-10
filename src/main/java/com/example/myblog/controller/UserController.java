@@ -5,10 +5,7 @@ import com.example.myblog.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -65,4 +62,14 @@ public class UserController {
         session.removeAttribute("current_user");
         return "redirect:/";
     }
+
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
+    public String showUserPage(@PathVariable int id, Model model){
+        this.userService.findById(id);
+
+        model.addAttribute("posts", this.userService.findById(id).getPosts());
+        model.addAttribute("users", this.userService.findAll());
+        return "user";
+    }
+
 }

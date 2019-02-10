@@ -16,7 +16,17 @@ body{
     border-radius: 50%;
 }
 
+.m-avatar{
+    width: 100px;
+    border-radius: 50%;
+
+}
+
 .img-post{
     max-width: 100%;
     margin: 0 auto;
+}
+
+.inline{
+    display: inline;
 }

@@ -36,8 +36,12 @@ public class BlogController {
 
 
     @GetMapping
-    public String showHomePage(Model model){
+    public String showHomePage(Model model, HttpSession session){
         List<Post> list = postService.findAllAndSort();
+
+        //fake current_user
+        session.setAttribute("current_user", userService.findById(0));
+        //----------------------------
 
         model.addAttribute("postList", list);
         return "home";
