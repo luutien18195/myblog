@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <meta charset="UTF-8">
-    <title th:text="${session.current_user.getUsername()}"></title>
+    <title th:if="${session.current_user!=null}" th:text="${session.current_user.getUsername()}"></title>
+    <title th:if="${session.current_user==null}"> User</title>
     <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootswatch/4.2.1/sandstone/bootstrap.min.css}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -117,11 +118,15 @@
 
                 <h4 class="display-3 inline">
                     <a data-toggle="modal" data-target="#uploadImgModal"
-                        th:if="${session.current_user.getId()==d_user.getId()}">
+                        th:if="${session.current_user!=null&&session.current_user.getId()==d_user.getId()}">
                         <img th:src="@{${d_user.getAvatar() }}" class="m-avatar" alt="avatar">
                     </a>
                     <img th:src="@{${d_user.getAvatar() }}"
-                         th:if="${session.current_user.getId()!=d_user.getId()}" class="m-avatar" alt="avatar">
+                         th:if="${session.current_user!=null&&session.current_user.getId()!=d_user.getId()}"
+                         class="m-avatar" alt="avatar">
+                    <img th:src="@{${d_user.getAvatar() }}"
+                         th:if="${session.current_user==null}"
+                         class="m-avatar" alt="avatar">
                     <span th:text="${d_user.getUsername()}"></span>
                 </h4>
                 <p class="lead">Welcome to MyBlogs!!</p>
