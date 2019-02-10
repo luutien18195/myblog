@@ -27,11 +27,9 @@
 
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="/home">
                         <i class="fas fa-home"></i> Home
-                        <span class="sr-only">(current)
-                           </span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -86,8 +84,10 @@
     <div class="row">
         <div class="col-9">
             <div class="jumbotron" style="background-color: #ffffff; padding: 20px">
-                <img th:src="@{${session.current_user.getAvatar() }}" class="m-avatar" alt="avatar">
-                <h4 class="display-3 inline"><span th:text="${session.current_user.getUsername()}"></span>!</h4>
+                <h4 class="display-3 inline">
+                    <img th:src="@{${d_user.getAvatar() }}" class="m-avatar" alt="avatar">
+                    <span th:text="${d_user.getUsername()}"></span>
+                </h4>
                 <p class="lead">Welcome to MyBlogs!!</p>
                 <hr class="my-4">
                 <p class="lead">
@@ -164,10 +164,16 @@
         <!--===right-info===-->
         <div class="col">
             <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <h5>All people</h5>
+                </li>
+
                 <li th:each="user : ${users}" class="list-group-item d-flex
                             justify-content-between align-items-center">
-                    <img th:src="@{${user.getAvatar() }}" class="avatar" alt="avatar">
-                    <p th:text="${user.getUsername() }" style="display: inline"></p>
+                    <a th:href="@{/user/{id} (id=${user.getId()})}">
+                        <img th:src="@{${user.getAvatar() }}" class="avatar" alt="avatar">
+                        <p th:text="${user.getUsername() }" style="display: inline"></p>
+                    </a>
                     <span class="badge badge-primary badge-pill">14</span>
                 </li>
             </ul>

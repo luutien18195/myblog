@@ -65,8 +65,7 @@ public class UserController {
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
     public String showUserPage(@PathVariable int id, Model model){
-        this.userService.findById(id);
-
+        model.addAttribute("d_user",this.userService.findById(id));
         model.addAttribute("posts", this.userService.findById(id).getPosts());
         model.addAttribute("users", this.userService.findAll());
         return "user";
