@@ -89,12 +89,12 @@
                         <input type="hidden" name="date" th:value="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}" >
 
                         <div class="row">
-                            <div class="col-4">
+                            <div class="col-6">
                                 <div class="input-group mb-3">
-                                    <!--<img th:if="${post.image!=''}" th:src="#inputGroupFile02.value()" alt="">-->
+                                    <img th:if="${post.image!=''}" id="previewImg" class="rounded mx-auto d-block" style="width: 100px; height: 100px">
                                     <div class="custom-file">
-                                            <input name="file" type="file" class="custom-file-input" id="fileUpload"
-                                                   accept="image/gif,image/jpeg,image/jpg,image/png,video/mp4,video/x-m4v">
+                                            <input name="file" type="file" class="custom-file-input" id="fileUpload" onchange="loadFile(event)"
+                                                   accept="image/gif,image/jpeg,image/jpg,image/png,video/mp4,video/x-m4v" >
                                             <label class="custom-file-label" for="fileUpload">Choose image</label>
                                     </div>
                                 </div>
@@ -138,6 +138,8 @@
 
 <!--==================FOOTER=====================-->
 <!--==================end-FOOTER=================-->
+<script src="/js/script.js">
 
+</script>
 </body>
 </html>

@@ -38,7 +38,6 @@ public class User{
     private Set<Post> posts = new HashSet<>();
 
     public User() {
-        this.avatar = "https://cdn0.iconfinder.com/data/icons/social-flat-rounded-rects/512/anonymous-512.png";
     }
 
     public int getId() {

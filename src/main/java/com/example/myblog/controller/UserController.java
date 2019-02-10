@@ -6,9 +6,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Random;
 
 @Controller
 public class UserController {
@@ -33,6 +39,7 @@ public class UserController {
            return "register";
        }
        else{
+           user.setAvatar("https://cdn0.iconfinder.com/data/icons/social-flat-rounded-rects/512/anonymous-512.png");
            this.userService.save(user);
            return "redirect:/login";
        }
@@ -65,6 +72,37 @@ public class UserController {
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
     public String showUserPage(@PathVariable int id, Model model){
+        model.addAttribute("d_user",this.userService.findById(id));
+        model.addAttribute("posts", this.userService.findById(id).getPosts());
+        model.addAttribute("users", this.userService.findAll());
+        return "user";
+    }
+
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.POST)
+    public String updateAvatar(@PathVariable int id, Model model, HttpSession session,
+                               @RequestParam(value = "avatar") MultipartFile multipartFile){
+        String directory = BlogController.uploadDirectory;
+        Random rd = new Random();
+        int randomNumber = rd.nextInt(1000000);
+        String fileName = "";
+        User user = (User) session.getAttribute("current_user");
+        User q_user = null;
+        if(!multipartFile.isEmpty()){
+            try {
+                fileName = randomNumber +"-avatar-"+ multipartFile.getOriginalFilename();
+                byte[] bytes = multipartFile.getBytes();
+                Path path = Paths.get(directory + fileName);
+
+                Files.write(path,bytes);
+                q_user = userService.findById(user.getId());
+                q_user.setAvatar("/images/"+fileName);
+                userService.save(q_user);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        session.setAttribute("current_user",q_user);
         model.addAttribute("d_user",this.userService.findById(id));
         model.addAttribute("posts", this.userService.findById(id).getPosts());
         model.addAttribute("users", this.userService.findAll());

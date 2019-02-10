@@ -40,7 +40,7 @@ public class BlogController {
         List<Post> list = postService.findAllAndSort();
 
         //fake current_user
-        session.setAttribute("current_user", userService.findById(0));
+//        session.setAttribute("current_user", userService.findById(0));
         //----------------------------
 
         model.addAttribute("users", userService.findAll());
