@@ -1,17 +1,20 @@
 package com.example.myblog.service;
 
 import com.example.myblog.model.User;
+import org.springframework.validation.Validator;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends Validator {
     List<User> findAll();
 
     User findById(int id);
 
-    User findByUserName(String name);
+    User findUserByEmail(String email);
 
-    User findByUsernameAndPassword(String username, String password);
+    User findUserByUserName(String name);
+
+    User findUserByUsernameAndPassword(String username, String password);
 
     void save(User user);
 

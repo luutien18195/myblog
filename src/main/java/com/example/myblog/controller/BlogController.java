@@ -35,8 +35,6 @@ public class BlogController {
     }
 
 
-
-
     @GetMapping
     public String showHomePage(Model model){
         List<Post> list = postService.findAllAndSort();
@@ -70,7 +68,7 @@ public class BlogController {
                 e.printStackTrace();
             }
         }
-        post.setUser(userService.findByUserName(user.getUsername()));
+        post.setUser(userService.findUserByUserName(user.getUsername()));
         post.setImage(fileName);
         post.setDate(date);
         postService.save(post);

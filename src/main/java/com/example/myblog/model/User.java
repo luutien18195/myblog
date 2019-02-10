@@ -1,8 +1,5 @@
 package com.example.myblog.model;
 
-import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
-
 import javax.persistence.*;
 
 import javax.validation.constraints.Email;
@@ -12,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "user")
-public class User implements Validator {
+public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -98,18 +95,5 @@ public class User implements Validator {
 
     public void setPosts(Set<Post> posts) {
         this.posts = posts;
-    }
-
-    @Override
-    public boolean supports(Class<?> clazz) {
-        return User.class.isAssignableFrom(clazz);
-    }
-
-    @Override
-    public void validate(Object target, Errors errors) {
-        User user = (User) target;
-        if(!user.getPassword().equals(user.getConfirmPassword())){
-            errors.rejectValue("password","password.wrongPassword");
-        }
     }
 }

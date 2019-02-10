@@ -31,7 +31,7 @@ public class UserController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String createNewAccount(Model model,@Valid @ModelAttribute("user") User user,
                               BindingResult bindingResult){
-       new User().validate(user, bindingResult);
+       this.userService.validate(user, bindingResult);
        if(bindingResult.hasFieldErrors()){
            return "register";
        }
@@ -49,8 +49,8 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(Model model, @RequestParam("username") String username,
                         @RequestParam("password") String password, HttpSession session){
-        if(this.userService.findByUsernameAndPassword(username,password)!=null){
-            User user = this.userService.findByUsernameAndPassword(username,password);
+        if(this.userService.findUserByUsernameAndPassword(username,password)!=null){
+            User user = this.userService.findUserByUsernameAndPassword(username,password);
             session.setAttribute("current_user", user);
             return "redirect:/home";
         }else{
