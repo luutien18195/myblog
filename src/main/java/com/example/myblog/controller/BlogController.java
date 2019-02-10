@@ -43,6 +43,7 @@ public class BlogController {
         session.setAttribute("current_user", userService.findById(0));
         //----------------------------
 
+        model.addAttribute("users", userService.findAll());
         model.addAttribute("postList", list);
         return "home";
     }
