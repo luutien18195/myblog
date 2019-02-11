@@ -1,7 +1,9 @@
 package com.example.myblog.controller;
 
 import com.example.myblog.model.User;
+import com.example.myblog.service.PostService;
 import com.example.myblog.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +21,10 @@ import java.util.Random;
 @Controller
 public class UserController {
     private UserService userService;
+
+    @Autowired
+    private PostService postService;
+
 
     public UserController(UserService userService){
         this.userService = userService;
@@ -73,7 +79,7 @@ public class UserController {
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
     public String showUserPage(@PathVariable int id, Model model){
         model.addAttribute("d_user",this.userService.findById(id));
-        model.addAttribute("posts", this.userService.findById(id).getPosts());
+        model.addAttribute("posts", this.postService.findPostsByUserIdAndOrderByIdDesc(id));
         model.addAttribute("users", this.userService.findAll());
         return "user";
     }

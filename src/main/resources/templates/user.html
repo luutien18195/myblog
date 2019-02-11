@@ -197,7 +197,7 @@
                 </div>
                 <img th:if="${post.image!='' && post.image!=null }" class="img-post" th:src="@{'/images/' + ${post.image}} " alt="Card image"/>
                 <div class="card-footer text-muted" th:text="${post.getPrettyDate(post.date)}">
-
+                    (ago)
                 </div>
             </div>
         </div>

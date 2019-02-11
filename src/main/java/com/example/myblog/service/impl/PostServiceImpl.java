@@ -29,6 +29,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Post> findPostsByUserIdAndOrderByIdDesc(int id){
+        return postRepository.findPostsByUserIDAndSortDESC(id);
+    }
+
+    @Override
     public Post findById(int id) {
         return postRepository.findById(id).orElse(null);
     }

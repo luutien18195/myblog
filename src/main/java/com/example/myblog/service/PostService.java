@@ -9,6 +9,8 @@ public interface PostService {
 
     List<Post> findAllAndSort();
 
+    List<Post> findPostsByUserIdAndOrderByIdDesc(int id);
+
     Post findById(int id);
 
     void save(Post post);
