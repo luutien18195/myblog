@@ -2,6 +2,7 @@ package com.example.myblog.controller;
 
 import com.example.myblog.model.Post;
 import com.example.myblog.model.User;
+import com.example.myblog.service.CommentService;
 import com.example.myblog.service.PostService;
 import com.example.myblog.service.UserService;
 import com.example.myblog.service.impl.PostServiceImpl;
@@ -31,6 +32,10 @@ public class BlogController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CommentService commentService;
+
     public static String uploadDirectory = System.getProperty("user.dir")+ "/src/main/resources/static/uploads/";
 
     @Autowired
