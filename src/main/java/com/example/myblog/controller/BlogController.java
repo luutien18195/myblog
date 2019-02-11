@@ -17,7 +17,11 @@ import java.nio.file.Files;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 @Controller
@@ -60,8 +64,16 @@ public class BlogController {
                                 HttpSession session){
         Random rd = new Random();
         int randomNum = rd.nextInt(1000000);
-        String fileName = "";
+        String fileName = "", dateR="";
         User user = (User) session.getAttribute("current_user");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm");
+        try {
+            Date date1 = formatter.parse(date);
+            dateR = formatter.format(date1);
+            post.setDate(dateR);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         if(!file.isEmpty()){
             try {
                 fileName = randomNum+"_"+file.getOriginalFilename();
@@ -75,7 +87,8 @@ public class BlogController {
         }
         post.setUser(userService.findUserByUserName(user.getUsername()));
         post.setImage(fileName);
-        post.setDate(date);
+
+
         postService.save(post);
         return "redirect:/";
     }

@@ -1,7 +1,12 @@
 package com.example.myblog.model;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
 import javax.persistence.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 @Entity
 @Table(name = "post")
@@ -81,5 +86,16 @@ public class Post {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getPrettyDate(String str) throws ParseException {
+        PrettyTime prettyTime = new PrettyTime();
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("dd-MM-yyyy HH:mm").parse(str);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date!=null?prettyTime.format(date):"";
     }
 }
