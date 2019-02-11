@@ -1,5 +1,6 @@
 package com.example.myblog.controller;
 
+import com.example.myblog.model.Comment;
 import com.example.myblog.model.Post;
 import com.example.myblog.model.User;
 import com.example.myblog.service.CommentService;
@@ -48,10 +49,35 @@ public class BlogController {
     public String showHomePage(Model model, HttpSession session){
         List<Post> list = postService.findAllAndSort();
 
-        //fake current_user
+        //fake current_user (hack-mode)
 //        session.setAttribute("current_user", userService.findById(0));
         //----------------------------
 
+        model.addAttribute("users", userService.findAll());
+        model.addAttribute("postList", list);
+        return "home";
+    }
+
+    @PostMapping
+    public String handleComment(Model model ,HttpSession session ,
+                                @RequestParam("comment") String comment_content,
+                                @RequestParam("date") String cre_date,
+                                @RequestParam("postId") String postId){
+        List<Post> list = postService.findAllAndSort();
+        Comment comment = new Comment();
+        User current_user = (User)session.getAttribute("current_user");
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        try {
+            Date date = format.parse(cre_date);
+            comment.setCreatedDate(format.format(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        comment.setUser(userService.findById(current_user.getId()));
+        comment.setPost(postService.findById(Integer.parseInt(postId)));
+        comment.setContent(comment_content);
+
+        commentService.save(comment);
         model.addAttribute("users", userService.findAll());
         model.addAttribute("postList", list);
         return "home";

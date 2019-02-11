@@ -30,3 +30,7 @@ body{
 .inline{
     display: inline;
 }
+
+.time-comment{
+    font-size: 11px;
+}

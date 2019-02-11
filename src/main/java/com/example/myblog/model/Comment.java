@@ -1,6 +1,11 @@
 package com.example.myblog.model;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
 import javax.persistence.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Entity
 @Table(name = "comment")
@@ -21,7 +26,7 @@ public class Comment {
     private Post post;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
     public int getId() {
@@ -62,6 +67,17 @@ public class Comment {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getPrettyDate() throws ParseException {
+        PrettyTime prettyTime = new PrettyTime();
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("dd-MM-yyyy HH:mm").parse(this.createdDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date!=null?prettyTime.format(date):"";
     }
 }
 

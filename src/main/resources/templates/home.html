@@ -123,14 +123,16 @@
                         (ago)
                     </div>
 
-                    <div class="card-body" >
-
-                    </div>
-
-                    <div class="card-footer">
+                    <div class="card-footer" th:if="${session.current_user!=null}">
                         <form action="/home" method="post">
                             <div class="input-group">
-                                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                <div class="input-group-append" style="position: relative; width: 40px">
+                                    <img th:src="@{${session.current_user.avatar}}" alt="avatar" class="rounded mx-auto d-block"
+                                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" >
+                                </div>
+                                <input type="hidden" name="postId" th:value="${post.getId()}">
+                                <input type="hidden" name="date" th:value="${#dates.format(#dates.createNow(), 'dd-MM-yyyy HH:mm')}">
+                                <input type="text" class="form-control" name="comment" aria-label="Amount (to the nearest dollar)">
 
                                 <div class="input-group-append">
                                     <button type="submit" class="input-group-text" style="cursor: pointer">
@@ -139,6 +141,25 @@
                                 </div>
                             </div>
                         </form>
+                    </div>
+
+
+                    <div class="card-body" th:if="${!post.getComments().isEmpty()}">
+                        <div class="list-group">
+                            <div class="flex-column align-items-start" style="cursor: pointer"
+                               th:each="comment : ${post.getComments()}">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">
+                                        <img th:src="@{${comment.getUser().getAvatar() }}" class="avatar" alt="avatar">
+                                        <p th:text="${comment.getUser().getUsername() }"
+                                           style="display: inline; color: #000; font-weight: bold"></p>
+                                    </h5>
+                                    <small th:text="${comment.getPrettyDate()}" class="text-muted">3 days ago</small>
+                                </div>
+                                <p style="margin-left: 40px; color: #000;" class="mb-1" th:text="${comment.getContent()}"></p>
+                                <!--<small class="text-muted">Donec id elit non mi porta.</small>-->
+                            </div>
+                        </div>
                     </div>
 
                 </div>
