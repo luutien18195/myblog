@@ -27,9 +27,6 @@ public class Post {
     @Column(name = "date_cre")
     private String date;
 
-    @Column(name = "comment_id")
-    private int comment_id;
-
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false) //nullable = false;
     private User user;
@@ -75,14 +72,6 @@ public class Post {
 
     public void setDate(String date) {
         this.date = date.toString();
-    }
-
-    public int getComment_id() {
-        return comment_id;
-    }
-
-    public void setComment_id(int comment_id) {
-        this.comment_id = comment_id;
     }
 
     public User getUser() {

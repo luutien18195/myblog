@@ -116,10 +116,31 @@
                         </h5>
                         <p class="card-text" th:text="${post.content}"></p>
                     </div>
+
                     <img th:if="${post.image!='' && post.image!=null }" class="img-post" th:src="@{'/images/' + ${post.image}} " alt="Card image"/>
+
                     <div class="card-footer text-muted" th:text="${post.getPrettyDate(post.date)}">
                         (ago)
                     </div>
+
+                    <div class="card-body" >
+
+                    </div>
+
+                    <div class="card-footer">
+                        <form action="/home" method="post">
+                            <div class="input-group">
+                                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+
+                                <div class="input-group-append">
+                                    <button type="submit" class="input-group-text" style="cursor: pointer">
+                                        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
                 </div>
             </div>
 
