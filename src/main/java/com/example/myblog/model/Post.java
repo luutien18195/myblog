@@ -6,7 +6,9 @@ import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 @Entity
 @Table(name = "post")
@@ -29,8 +31,11 @@ public class Post {
     private int comment_id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = true) //nullable = false;
+    @JoinColumn(name = "user_id", nullable = false) //nullable = false;
     private User user;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+    private Set<Comment> comments = new HashSet<>();
 
     public Post() {
         this.image = null;
@@ -86,6 +91,14 @@ public class Post {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     public String getPrettyDate(String str) throws ParseException {

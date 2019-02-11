@@ -37,6 +37,9 @@ public class User{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<Post> posts = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private Set<Comment> comments = new HashSet<>();
+
     public User() {
     }
 
@@ -94,5 +97,13 @@ public class User{
 
     public void setPosts(Set<Post> posts) {
         this.posts = posts;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 }
