@@ -1,11 +1,14 @@
 package com.example.myblog.service;
 
 import com.example.myblog.model.Comment;
+import com.example.myblog.model.Post;
 
 import java.util.List;
 
 public interface CommentService {
     List<Comment> findAll();
+
+    List<Comment> findCommentsByPostAndSortById(int id);
 
     Comment findById(int id);
 

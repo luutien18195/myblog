@@ -1,6 +1,7 @@
 package com.example.myblog.service.impl;
 
 import com.example.myblog.model.Comment;
+import com.example.myblog.model.Post;
 import com.example.myblog.repository.CommentRepository;
 import com.example.myblog.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> findAll() {
         return this.commentRepository.findAll();
+    }
+
+    @Override
+    public List<Comment> findCommentsByPostAndSortById(int id) {
+        return this.commentRepository.findCommentsByPostAndSortById(id);
     }
 
     @Override
