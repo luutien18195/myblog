@@ -1,6 +1,8 @@
 package com.example.myblog.controller;
 
+import com.example.myblog.model.Comment;
 import com.example.myblog.model.User;
+import com.example.myblog.service.CommentService;
 import com.example.myblog.service.PostService;
 import com.example.myblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 @Controller
@@ -24,6 +30,9 @@ public class UserController {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private CommentService commentService;
 
 
     public UserController(UserService userService){
@@ -114,5 +123,34 @@ public class UserController {
         model.addAttribute("users", this.userService.findAll());
         return "user";
     }
+
+    @RequestMapping(value = "/user/{id}/comment", method = RequestMethod.POST)
+    public String commentResolve(@PathVariable int id, Model model, HttpSession session,
+                                 @RequestParam("comment") String comment_content,
+                                 @RequestParam("postId") String postId,
+                                 @RequestParam("date") String date_str){
+        Comment comment = new Comment();
+        User user = (User) session.getAttribute("current_user");
+        comment.setContent(comment_content);
+        comment.setPost(postService.findById(Integer.parseInt(postId)));
+        comment.setUser(userService.findById(user.getId()));
+
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.ENGLISH);
+        try {
+            Date date = format.parse(date_str);
+            comment.setCreatedDate(format.format(date));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        commentService.save(comment);
+
+        model.addAttribute("d_user",this.userService.findById(id));
+        model.addAttribute("posts", this.userService.findById(id).getPosts());
+        model.addAttribute("users", this.userService.findAll());
+        return "user";
+    }
+
 
 }

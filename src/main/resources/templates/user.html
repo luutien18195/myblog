@@ -195,9 +195,51 @@
                     </h5>
                     <p class="card-text" th:text="${post.content}"></p>
                 </div>
-                <img th:if="${post.image!='' && post.image!=null }" class="img-post" th:src="@{'/images/' + ${post.image}} " alt="Card image"/>
+
+                <img th:if="${post.image!='' && post.image!=null }" class="img-post" th:src="@{'/images/' + ${post.image}} "
+                     alt="Card image"/>
+
                 <div class="card-footer text-muted" th:text="${post.getPrettyDate(post.date)}">
                     (ago)
+                </div>
+
+                <div class="card-footer" th:if="${session.current_user!=null}">
+                    <form th:action="@{/user/{id}/comment (id=${post.getUser().getId()})}" method="post">
+                        <div class="input-group">
+                            <div class="input-group-append" style="position: relative; width: 40px">
+                                <img th:src="@{${session.current_user.avatar}}" alt="avatar" class="rounded mx-auto d-block"
+                                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" >
+                            </div>
+                            <input type="hidden" name="postId" th:value="${post.getId()}">
+                            <input type="hidden" name="date" th:value="${#dates.format(#dates.createNow(), 'dd-MM-yyyy HH:mm')}">
+                            <input type="text" class="form-control" name="comment" aria-label="Amount (to the nearest dollar)">
+
+                            <div class="input-group-append">
+                                <button type="submit" class="input-group-text" style="cursor: pointer">
+                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+                <div class="card-body" th:if="${!post.getComments().isEmpty()}">
+                    <div class="list-group">
+                        <div class="flex-column align-items-start" style="cursor: pointer"
+                             th:each="comment : ${post.getComments()}">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">
+                                    <img th:src="@{${comment.getUser().getAvatar() }}" class="avatar" alt="avatar">
+                                    <p th:text="${comment.getUser().getUsername() }"
+                                       style="display: inline; color: #000; font-weight: bold"></p>
+                                </h5>
+                                <small th:text="${comment.getPrettyDate()}" class="text-muted"></small>
+                            </div>
+                            <p style="margin-left: 40px; color: #000;" class="mb-1" th:text="${comment.getContent()}"></p>
+                            <!--<small class="text-muted">Donec id elit non mi porta.</small>-->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

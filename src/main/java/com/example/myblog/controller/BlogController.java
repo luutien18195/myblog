@@ -66,7 +66,7 @@ public class BlogController {
         List<Post> list = postService.findAllAndSort();
         Comment comment = new Comment();
         User current_user = (User)session.getAttribute("current_user");
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.ENGLISH);
         try {
             Date date = format.parse(cre_date);
             comment.setCreatedDate(format.format(date));
