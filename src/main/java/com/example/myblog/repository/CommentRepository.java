@@ -14,4 +14,7 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
     @Query("SELECT c FROM Comment c WHERE c.post.id = :id ORDER BY c.id DESC")
     List<Comment> findCommentsByPostAndSortById(@Param("id") int id);
+
+    @Query("SELECT c FROM Comment c ORDER BY c.id DESC")
+    List<Comment> findAllAndSortById();
 }

@@ -29,6 +29,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public List<Comment> findAllAndSortById() {
+        return this.commentRepository.findAllAndSortById();
+    }
+
+    @Override
     public Comment findById(int id) {
         return this.commentRepository.findById(id).orElse(null);
     }

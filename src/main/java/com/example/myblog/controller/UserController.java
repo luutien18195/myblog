@@ -90,6 +90,7 @@ public class UserController {
         model.addAttribute("d_user",this.userService.findById(id));
         model.addAttribute("posts", this.postService.findPostsByUserIdAndOrderByIdDesc(id));
         model.addAttribute("users", this.userService.findAll());
+        model.addAttribute("comments_desc", commentService.findAllAndSortById());
         return "user";
     }
 
@@ -121,6 +122,7 @@ public class UserController {
         model.addAttribute("d_user",this.userService.findById(id));
         model.addAttribute("posts", this.userService.findById(id).getPosts());
         model.addAttribute("users", this.userService.findAll());
+        model.addAttribute("comments_desc", commentService.findAllAndSortById());
         return "user";
     }
 
@@ -149,6 +151,7 @@ public class UserController {
         model.addAttribute("d_user",this.userService.findById(id));
         model.addAttribute("posts", this.userService.findById(id).getPosts());
         model.addAttribute("users", this.userService.findAll());
+        model.addAttribute("comments_desc", commentService.findAllAndSortById());
         return "user";
     }
 

@@ -55,6 +55,7 @@ public class BlogController {
 
         model.addAttribute("users", userService.findAll());
         model.addAttribute("postList", list);
+        model.addAttribute("comments_desc", commentService.findAllAndSortById());
         return "home";
     }
 
@@ -80,6 +81,7 @@ public class BlogController {
         commentService.save(comment);
         model.addAttribute("users", userService.findAll());
         model.addAttribute("postList", list);
+        model.addAttribute("comments_desc", commentService.findAllAndSortById());
         return "home";
     }
 

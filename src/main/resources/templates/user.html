@@ -227,7 +227,7 @@
                 <div class="card-body" th:if="${!post.getComments().isEmpty()}">
                     <div class="list-group">
                         <div class="flex-column align-items-start" style="cursor: pointer"
-                             th:each="comment : ${post.getComments()}">
+                             th:each="comment : ${comments_desc}"  th:if="${comment.getPost().getId()==post.getId()}">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">
                                     <img th:src="@{${comment.getUser().getAvatar() }}" class="avatar" alt="avatar">

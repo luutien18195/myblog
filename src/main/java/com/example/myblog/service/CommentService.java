@@ -10,6 +10,8 @@ public interface CommentService {
 
     List<Comment> findCommentsByPostAndSortById(int id);
 
+    List<Comment> findAllAndSortById();
+
     Comment findById(int id);
 
     void save(Comment comment);
