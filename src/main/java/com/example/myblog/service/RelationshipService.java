@@ -7,11 +7,16 @@ import java.util.List;
 public interface RelationshipService {
     List<Relationship> findAll();
 
-    List<Relationship> findRelationshipsByFollowedOrFollowerOrderById(int id);
-
     List<Relationship> findRelationshipsByFollowerIdOrderById(int id);
 
     List<Relationship> findRelationshipsByFollowedIdOrderById(int id);
 
+    Relationship findRelationshipByFollowerIdAndFollowedId(int follower_id, int followed_id);
+
+    void save(Relationship relationship);
+
+    void deleteRelationshipByFollowerIdAndFollowedId(int follower_id, int followed_id);
+
+    void deleteById(int id);
 
 }
