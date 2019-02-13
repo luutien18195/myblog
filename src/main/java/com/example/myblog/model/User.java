@@ -40,6 +40,14 @@ public class User{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<Comment> comments = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "follower")
+//    @JoinColumn(name = "follower_id")
+    private Set<Relationship> active_relationships;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "followed")
+//    @JoinColumn(name = "followed_id")
+    private Set<Relationship> passive_relationships;
+
     public User() {
     }
 
@@ -105,5 +113,21 @@ public class User{
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
+    }
+
+    public Set<Relationship> getActive_relationships() {
+        return active_relationships;
+    }
+
+    public void setActive_relationships(Set<Relationship> active_relationships) {
+        this.active_relationships = active_relationships;
+    }
+
+    public Set<Relationship> getPassive_relationships() {
+        return passive_relationships;
+    }
+
+    public void setPassive_relationships(Set<Relationship> passive_relationships) {
+        this.passive_relationships = passive_relationships;
     }
 }
