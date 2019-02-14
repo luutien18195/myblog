@@ -91,14 +91,15 @@ public class UserController {
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
     public String showUserPage(@PathVariable int id, Model model, HttpSession session){
         User user = (User) session.getAttribute("current_user");
-        Set<Relationship> relationships = userService.findById(user.getId()).getActive_relationships();
-
+        if(user!=null){
+            Set<Relationship> relationships = userService.findById(user.getId()).getActive_relationships();
+            model.addAttribute("isFollowed", isFollowed(relationships,id));
+        }
 
         model.addAttribute("d_user",this.userService.findById(id));
         model.addAttribute("posts", this.postService.findPostsByUserIdAndOrderByIdDesc(id));
         model.addAttribute("users", this.userService.findAll());
         model.addAttribute("comments_desc", commentService.findAllAndSortById());
-        model.addAttribute("isFollowed", isFollowed(relationships,id));
         return "user";
     }
 

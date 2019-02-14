@@ -104,22 +104,24 @@
                               th:text="${d_user.getPassive_relationships().size()}"></span>
                     </a>
 
-                    <form th:action="@{{id}/follow (id = ${d_user.getId()}) }" method="post"
-                          th:if="${session.current_user.getId()!=d_user.getId()&&!isFollowed}">
-                        <input type="hidden" name="followed_id" th:value="${d_user.getId()}">
-                        <input type="hidden" name="follower_id" th:value="${session.current_user.getId()}">
-                        <input type="hidden" name="date_created" th:value="${#dates.format(#dates.createNow(), 'dd-MM-yyyy HH:mm')}">
-                        <button id="follow" type="submit" style="margin: 15px auto 0 auto; display: block"
-                                class="btn btn-outline-primary">Follow</button>
-                    </form>
+                    <div th:if="${session.current_user!=null}">
+                        <form th:action="@{{id}/follow (id = ${d_user.getId()}) }" method="post"
+                              th:if="${session.current_user.getId()!=d_user.getId()&&!isFollowed}">
+                            <input type="hidden" name="followed_id" th:value="${d_user.getId()}">
+                            <input type="hidden" name="follower_id" th:value="${session.current_user.getId()}">
+                            <input type="hidden" name="date_created" th:value="${#dates.format(#dates.createNow(), 'dd-MM-yyyy HH:mm')}">
+                            <button id="follow" type="submit" style="margin: 15px auto 0 auto; display: block"
+                                    class="btn btn-outline-primary">Follow</button>
+                        </form>
 
-                    <form th:action="@{{id}/unfollow (id = ${d_user.getId()}) }" method="post"
-                          th:if="${session.current_user.getId()!=d_user.getId() && isFollowed}">
-                        <input type="hidden" name="followed_id" th:value="${d_user.getId()}">
-                        <input type="hidden" name="follower_id" th:value="${session.current_user.getId()}">
-                        <button id="unfollow" type="submit" style="margin: 15px auto 0 auto; display: block"
-                                class="btn btn-outline-secondary">UnFollow</button>
-                    </form>
+                        <form th:action="@{{id}/unfollow (id = ${d_user.getId()}) }" method="post"
+                              th:if="${session.current_user.getId()!=d_user.getId() && isFollowed}">
+                            <input type="hidden" name="followed_id" th:value="${d_user.getId()}">
+                            <input type="hidden" name="follower_id" th:value="${session.current_user.getId()}">
+                            <button id="unfollow" type="submit" style="margin: 15px auto 0 auto; display: block"
+                                    class="btn btn-outline-secondary">UnFollow</button>
+                        </form>
+                    </div>
 
 
                 </div>
