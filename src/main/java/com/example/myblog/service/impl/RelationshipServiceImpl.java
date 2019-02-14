@@ -33,18 +33,8 @@ public class RelationshipServiceImpl implements RelationshipService {
     }
 
     @Override
-    public Relationship findRelationshipByFollowerIdAndFollowedId(int follower_id, int followed_id) {
-        return this.relationshipRepository.findRelationshipByFollowerIdAndFollowedId(follower_id,followed_id);
-    }
-
-    @Override
     public void save(Relationship relationship) {
         this.relationshipRepository.save(relationship);
-    }
-
-    @Override
-    public void deleteRelationshipByFollowerIdAndFollowedId(int follower_id, int followed_id) {
-        this.relationshipRepository.deleteRelationshipByFollowerIdAndFollowedId(follower_id,followed_id);
     }
 
     @Override

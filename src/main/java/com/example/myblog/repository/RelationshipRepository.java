@@ -15,14 +15,4 @@ public interface RelationshipRepository extends JpaRepository<Relationship, Inte
 
     @Query("SELECT r FROM Relationship r WHERE r.followed.id = :id ORDER BY r.id DESC")
     List<Relationship> findRelationshipsByFollowedIdOrderById(@Param("id") int id);
-
-    @Query("SELECT r FROM  Relationship r WHERE r.follower.id = :follower_id AND r.followed_id = :followed_id ")
-    Relationship findRelationshipByFollowerIdAndFollowedId(@Param("follower_id") int follower_id,
-                                                           @Param("followed_id") int followed_id);
-
-    @Query("DELETE FROM Relationship r WHERE r.followed.id = :followed_id AND r.follower.id = :follower_id")
-    void deleteRelationshipByFollowerIdAndFollowedId(@Param("follower_id") int follower_id,
-                                                     @Param("followed_id") int followed_id);
-
-
 }

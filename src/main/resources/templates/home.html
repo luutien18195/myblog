@@ -76,6 +76,26 @@
         <div class="row">
             <!--===left-info===-->
             <div class="col">
+                <div th:if="${session.current_user!=null}" class="card mb-3" style="max-width: 20rem; ">
+                    <div class="card-header" style="height: 59px; background-color: rgba(61,89,118,1);">
+                        <img th:src="@{${session.current_user.getAvatar()}}" alt="avatar" class="card_avatar">
+                    </div>
+                    <div class="card-body" style="margin-top: 15px">
+                        <h4 class="card-title" style="text-align: center"
+                            th:text="${session.current_user.getUsername()}"></h4>
+                        <a class="follow_tag">
+                            Following
+                            <span class="badge badge-primary badge-pill" style="display:block;"
+                                  th:text="${session.current_user.getActive_relationships().size()}"></span>
+                        </a>
+                        <a class="follow_tag">
+                            Followers
+                            <span class="badge badge-primary badge-pill" style="display: block"
+                                  th:text="${session.current_user.getPassive_relationships().size()}"></span>
+                        </a>
+                    </div>
+                </div>
+
                 <ul class="list-group">
                     <li class="list-group-item d-flex justify-content-between align-items-center"
                         th:if="${session.current_user}">

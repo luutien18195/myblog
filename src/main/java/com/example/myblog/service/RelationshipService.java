@@ -11,11 +11,7 @@ public interface RelationshipService {
 
     List<Relationship> findRelationshipsByFollowedIdOrderById(int id);
 
-    Relationship findRelationshipByFollowerIdAndFollowedId(int follower_id, int followed_id);
-
     void save(Relationship relationship);
-
-    void deleteRelationshipByFollowerIdAndFollowedId(int follower_id, int followed_id);
 
     void deleteById(int id);
 

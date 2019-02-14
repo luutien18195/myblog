@@ -1,9 +1,11 @@
 package com.example.myblog.controller;
 
 import com.example.myblog.model.Comment;
+import com.example.myblog.model.Relationship;
 import com.example.myblog.model.User;
 import com.example.myblog.service.CommentService;
 import com.example.myblog.service.PostService;
+import com.example.myblog.service.RelationshipService;
 import com.example.myblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,9 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Random;
+import java.util.*;
 
 @Controller
 public class UserController {
@@ -33,6 +33,9 @@ public class UserController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private RelationshipService relationshipService;
 
 
     public UserController(UserService userService){
@@ -86,11 +89,16 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    public String showUserPage(@PathVariable int id, Model model){
+    public String showUserPage(@PathVariable int id, Model model, HttpSession session){
+        User user = (User) session.getAttribute("current_user");
+        Set<Relationship> relationships = userService.findById(user.getId()).getActive_relationships();
+
+
         model.addAttribute("d_user",this.userService.findById(id));
         model.addAttribute("posts", this.postService.findPostsByUserIdAndOrderByIdDesc(id));
         model.addAttribute("users", this.userService.findAll());
         model.addAttribute("comments_desc", commentService.findAllAndSortById());
+        model.addAttribute("isFollowed", isFollowed(relationships,id));
         return "user";
     }
 
@@ -148,12 +156,65 @@ public class UserController {
 
         commentService.save(comment);
 
+        Set<Relationship> relationships = userService.findById(user.getId()).getActive_relationships();
+
         model.addAttribute("d_user",this.userService.findById(id));
         model.addAttribute("posts", this.userService.findById(id).getPosts());
         model.addAttribute("users", this.userService.findAll());
         model.addAttribute("comments_desc", commentService.findAllAndSortById());
+        model.addAttribute("isFollowed", isFollowed(relationships,id));
         return "user";
     }
 
+    @RequestMapping(value = "/user/{id}/follow", method = RequestMethod.POST)
+    public String followResolve(@PathVariable int id, Model model, HttpSession session,
+                                @RequestParam("followed_id") String followed_id,
+                                @RequestParam("follower_id") String follower_id,
+                                @RequestParam("date_created") String date_created){
+        Relationship relationship = new Relationship();
+        relationship.setFollowed(userService.findById(Integer.parseInt(followed_id)));
+        relationship.setFollower(userService.findById(Integer.parseInt(follower_id)));
+        relationship.setCreated_date(date_created);
 
+        relationshipService.save(relationship);
+
+        model.addAttribute("d_user",this.userService.findById(id));
+        model.addAttribute("posts", this.userService.findById(id).getPosts());
+        model.addAttribute("users", this.userService.findAll());
+        model.addAttribute("comments_desc", commentService.findAllAndSortById());
+        model.addAttribute("isFollowed", true);
+        return "user";
+    }
+
+    @RequestMapping(value = "/user/{id}/unfollow", method = RequestMethod.POST)
+    public String unFollowResolve(@PathVariable int id, Model model, HttpSession session,
+                                @RequestParam("followed_id") String followed_id){
+
+        User user = (User) session.getAttribute("current_user");
+        Set<Relationship> relationships = userService.findById(user.getId()).getActive_relationships();
+        int rmId = 0;
+        for (Relationship relationship: relationships) {
+            if(relationship.getFollowed().getId()==Integer.parseInt(followed_id)){
+                rmId = relationship.getId();
+            }
+        }
+
+        relationshipService.deleteById(rmId);
+        model.addAttribute("d_user",this.userService.findById(id));
+        model.addAttribute("posts", this.userService.findById(id).getPosts());
+        model.addAttribute("users", this.userService.findAll());
+        model.addAttribute("comments_desc", commentService.findAllAndSortById());
+        model.addAttribute("isFollowed", false);
+        return "user";
+    }
+
+    public static boolean isFollowed(Set<Relationship> relationships, int user_id){
+        boolean isFollowed = false ;
+        for (Relationship relationship: relationships) {
+            if(relationship.getFollowed().getId() == user_id){
+                isFollowed = true;
+            }
+        }
+        return isFollowed;
+    }
 }
