@@ -94,6 +94,7 @@ public class UserController {
         if(user!=null){
             Set<Relationship> relationships = userService.findById(user.getId()).getActive_relationships();
             model.addAttribute("isFollowed", isFollowed(relationships,id));
+            session.setAttribute("current_user", userService.findById(user.getId()));
         }
 
         model.addAttribute("d_user",this.userService.findById(id));
@@ -127,11 +128,14 @@ public class UserController {
             }
         }
 
+        Set<Relationship> relationships = userService.findById(user.getId()).getActive_relationships();
+
         session.setAttribute("current_user",q_user);
         model.addAttribute("d_user",this.userService.findById(id));
         model.addAttribute("posts", this.userService.findById(id).getPosts());
         model.addAttribute("users", this.userService.findAll());
         model.addAttribute("comments_desc", commentService.findAllAndSortById());
+        model.addAttribute("isFollowed", isFollowed(relationships,id));
         return "user";
     }
 
@@ -156,6 +160,9 @@ public class UserController {
         }
 
         commentService.save(comment);
+        if(user!=null){
+            session.setAttribute("current_user", userService.findById(user.getId()));
+        }
 
         Set<Relationship> relationships = userService.findById(user.getId()).getActive_relationships();
 
@@ -179,6 +186,11 @@ public class UserController {
 
         relationshipService.save(relationship);
 
+        User user = (User) session.getAttribute("current_user");
+        if(user!=null){
+            session.setAttribute("current_user", userService.findById(user.getId()));
+        }
+
         model.addAttribute("d_user",this.userService.findById(id));
         model.addAttribute("posts", this.userService.findById(id).getPosts());
         model.addAttribute("users", this.userService.findAll());
@@ -201,6 +213,10 @@ public class UserController {
         }
 
         relationshipService.deleteById(rmId);
+
+        if(user!=null){
+            session.setAttribute("current_user", userService.findById(user.getId()));
+        }
         model.addAttribute("d_user",this.userService.findById(id));
         model.addAttribute("posts", this.userService.findById(id).getPosts());
         model.addAttribute("users", this.userService.findAll());

@@ -52,7 +52,10 @@ public class BlogController {
         //fake current_user (hack-mode)
 //        session.setAttribute("current_user", userService.findById(0));
         //----------------------------
-
+        User user = (User) session.getAttribute("current_user");
+        if(user!=null){
+            session.setAttribute("current_user", userService.findById(user.getId()));
+        }
         model.addAttribute("users", userService.findAll());
         model.addAttribute("postList", list);
         model.addAttribute("comments_desc", commentService.findAllAndSortById());

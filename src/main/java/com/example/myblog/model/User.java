@@ -40,11 +40,11 @@ public class User{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<Comment> comments = new HashSet<>();
 
-    @OneToMany(mappedBy = "follower")
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "follower")
 //    @JoinColumn(name = "follower_id")
     private Set<Relationship> active_relationships;
 
-    @OneToMany(mappedBy = "followed")
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "followed")
 //    @JoinColumn(name = "followed_id")
     private Set<Relationship> passive_relationships;
 
